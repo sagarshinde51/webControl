@@ -1,6 +1,8 @@
 import streamlit as st
 import mysql.connector  # Corrected import statement
 from mysql.connector import OperationalError, IntegrityError  # For error handling
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # Title of the app
 st.title("Custom Toggle Switches App with Database Update")
@@ -65,6 +67,22 @@ temperature, humidity = fetch_temperature_humidity()
 if temperature is not None and humidity is not None:
     st.sidebar.write(f"Temperature: {temperature}°C")
     st.sidebar.write(f"Humidity: {humidity}%")
+    
+    # Create a DataFrame for plotting the chart
+    data = {
+        'Metric': ['Temperature (°C)', 'Humidity (%)'],
+        'Value': [temperature, humidity]
+    }
+    
+    df = pd.DataFrame(data)
+    
+    # Plot the chart in the sidebar
+    fig, ax = plt.subplots()
+    ax.bar(df['Metric'], df['Value'], color=['blue', 'green'])
+    ax.set_title('Temperature and Humidity')
+    ax.set_xlabel('Metrics')
+    ax.set_ylabel('Values')
+    st.sidebar.pyplot(fig)  # Display the plot in the sidebar
 else:
     st.sidebar.write("No temperature and humidity data available.")
 
