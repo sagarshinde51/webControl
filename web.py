@@ -36,6 +36,38 @@ def update_flag(id, value):
     except mysql.connector.Error as err:
         st.error(f"Failed to update ID {id}: {err}")
 
+# Function to fetch temperature and humidity data
+def fetch_temperature_humidity():
+    try:
+        connection = connect_to_db()
+        if connection is None:
+            return None, None
+        
+        cursor = connection.cursor()
+        query = "SELECT temp, humi FROM TempHumi WHERE id = 1"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        
+        if result:
+            return result  # Returns temp, humi as a tuple
+        else:
+            return None, None
+    except mysql.connector.Error as err:
+        st.error(f"Error fetching temperature and humidity: {err}")
+        return None, None
+
+# Fetch temperature and humidity for id 1
+temperature, humidity = fetch_temperature_humidity()
+
+# Display temperature and humidity in the sidebar
+if temperature is not None and humidity is not None:
+    st.sidebar.write(f"Temperature: {temperature}°C")
+    st.sidebar.write(f"Humidity: {humidity}%")
+else:
+    st.sidebar.write("No temperature and humidity data available.")
+
 # Custom CSS to style the toggle switch
 toggle_css = """
     <style>
