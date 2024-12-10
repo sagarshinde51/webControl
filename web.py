@@ -27,7 +27,7 @@ def update_flag(id, value):
         if connection is None:
             return
         cursor = connection.cursor()
-        query = "UPDATE UpdateFlag SET flag_value = %s WHERE id = %s"
+        query = "UPDATE UpdateFlag SET F1 = %s WHERE id = %s"
         cursor.execute(query, (value, id))
         connection.commit()
         cursor.close()
