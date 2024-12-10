@@ -1,5 +1,5 @@
 import streamlit as st
-#import MySQLdb  # This will work with mysqlclient
+
 from MySQLdb import OperationalError, IntegrityError  
 
 # Title of the app
