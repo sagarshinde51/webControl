@@ -1,21 +1,22 @@
 import streamlit as st
-
-from MySQLdb import OperationalError, IntegrityError  
+import mysql.connector  # Corrected import statement
+from mysql.connector import OperationalError, IntegrityError  # For error handling
 
 # Title of the app
 st.title("Custom Toggle Switches App with Database Update")
 
-# Function to connect to the database using MySQLdb (mysqlclient)
+# Function to connect to the database
 def connect_to_db():
     try:
-        connection = MySQLdb.connect(
+        # Establish a connection to the MySQL database
+        connection = mysql.connector.connect(
             host="82.180.143.66",
             user="u263681140_students",
-            passwd="testStudents@123",
-            db="u263681140_students"
+            password="testStudents@123",
+            database="u263681140_students"
         )
         return connection
-    except MySQLdb.MySQLError as err:
+    except mysql.connector.Error as err:
         st.error(f"Error: {err}")
         return None
 
@@ -32,7 +33,7 @@ def update_flag(id, value):
         cursor.close()
         connection.close()
         st.success(f"Successfully updated ID {id} to {value}")
-    except MySQLdb.MySQLError as err:
+    except mysql.connector.Error as err:
         st.error(f"Failed to update ID {id}: {err}")
 
 # Custom CSS to style the toggle switch
@@ -74,7 +75,6 @@ st.write("Switch 2 value:", 1 if switch2 == 'on' else 0)
 st.write("Switch 3 value:", 1 if switch3 == 'on' else 0)
 
 # Update database values when button is clicked
-if st.button('Update Switch Values in Database'):
-    update_flag(1, 1 if switch1 == 'on' else 0)
-    update_flag(2, 1 if switch2 == 'on' else 0)
-    update_flag(3, 1 if switch3 == 'on' else 0)
+update_flag(1, 1 if switch1 == 'on' else 0)
+update_flag(2, 1 if switch2 == 'on' else 0)
+update_flag(3, 1 if switch3 == 'on' else 0)
