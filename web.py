@@ -1,11 +1,11 @@
 import streamlit as st
-import MySQLdb  # Using MySQLdb instead of mysql.connector
+import MySQLdb  # This will work with mysqlclient
 from MySQLdb import OperationalError, IntegrityError  
 
 # Title of the app
 st.title("Custom Toggle Switches App with Database Update")
 
-# Function to connect to the database using MySQLdb
+# Function to connect to the database using MySQLdb (mysqlclient)
 def connect_to_db():
     try:
         connection = MySQLdb.connect(
@@ -26,7 +26,7 @@ def update_flag(id, value):
         if connection is None:
             return
         cursor = connection.cursor()
-        query = "UPDATE UpdateFlag SET F1 = %s WHERE id = %s"
+        query = "UPDATE UpdateFlag SET flag_value = %s WHERE id = %s"
         cursor.execute(query, (value, id))
         connection.commit()
         cursor.close()
@@ -74,7 +74,7 @@ st.write("Switch 2 value:", 1 if switch2 == 'on' else 0)
 st.write("Switch 3 value:", 1 if switch3 == 'on' else 0)
 
 # Update database values when button is clicked
-#if st.button('Update Switch Values in Database'):
-update_flag(1, 1 if switch1 == 'on' else 0)
-update_flag(2, 1 if switch2 == 'on' else 0)
-update_flag(3, 1 if switch3 == 'on' else 0)
+if st.button('Update Switch Values in Database'):
+    update_flag(1, 1 if switch1 == 'on' else 0)
+    update_flag(2, 1 if switch2 == 'on' else 0)
+    update_flag(3, 1 if switch3 == 'on' else 0)
